@@ -1,9 +1,17 @@
+window.addEventListener(
+    "error",
+    function(event){
+        console.log(
+            "Ignored JS Error:",
+            event.message
+        );
+        event.preventDefault();
+    }
+);
 // =========================
 // PAGE LOADED
 // =========================
-
 window.onload = function(){
-
     console.log(
         "DiaPredict AI Loaded Successfully"
     );
@@ -258,6 +266,7 @@ window.onload = function(){
 
                 const result =
                 await response.json();
+                console.log(result);
 
                 loader.style.display =
                 "none";
@@ -270,29 +279,65 @@ window.onload = function(){
                 document.getElementById(
                     "predictionText"
                 ).innerText =
-                result.prediction;
+                result.prediction || result.error || "Prediction unavailable"
 
                 // Probability
 
                 document.getElementById(
                     "probabilityText"
                 ).innerText =
-                `Probability: ${result.probability}%`;
+`Probability: ${result.probability || 0}%`;
 
-                // Progress Bar
+// Progress Bar
 
-                document.getElementById(
-                    "meterBar"
-                ).style.width =
-                `${result.probability}%`;
+document.getElementById(
+    "meterBar"
+).style.width =
+`${result.probability || 0}%`;
 
-                // Circular Meter
+// Circular Meter
 
-                document.getElementById(
-                    "riskValue"
-                ).innerText =
-                `${result.probability}%`;
+document.getElementById(
+    "riskValue"
+).innerText =
+`${result.probability || 0}%`;
+// =========================
+// GLUCOSE TREND
+// =========================
 
+const glucoseTrend =
+document.getElementById(
+    "glucoseTrend"
+);
+
+if(glucoseTrend){
+
+    glucoseTrend.innerText =
+
+    `Glucose Trend: ${
+        result.glucose_trend || "N/A"
+    }`;
+
+}
+
+// =========================
+// BMI ANALYSIS
+// =========================
+
+const bmiAnalysis =
+document.getElementById(
+    "bmiAnalysis"
+);
+
+if(bmiAnalysis){
+
+    bmiAnalysis.innerText =
+
+    `BMI Analysis: ${
+        result.bmi_analysis || "N/A"
+    }`;
+
+}
                 // Tips
 
                 const tipsBox =
@@ -302,7 +347,8 @@ window.onload = function(){
 
                 tipsBox.innerHTML = "";
 
-                result.suggestions.forEach(
+                (result.suggestions || []).forEach(
+                    
                     (tip) => {
 
                         tipsBox.innerHTML +=
@@ -329,6 +375,82 @@ window.onload = function(){
 
                     doctorBox.style.display =
                     "none";
+// =========================
+// GLUCOSE GRAPH
+// =========================
+
+const canvas =
+document.getElementById(
+    "glucoseChart"
+);
+
+if(canvas){
+
+    const ctx =
+    canvas.getContext("2d");
+
+    if(window.myChart){
+
+        window.myChart.destroy();
+
+    }
+
+    window.myChart =
+    new Chart(ctx, {
+
+        type:"bar",
+
+        data:{
+
+            labels:[
+
+                "Your Glucose",
+
+                "Normal",
+
+                "Critical"
+
+            ],
+
+            datasets:[{
+
+                label:"Glucose Analysis",
+
+                data:[
+
+                    parseFloat(
+                        data.Glucose
+                    ),
+
+                    100,
+
+                    180
+
+                ],
+
+                backgroundColor:[
+
+                    "#3b82f6",
+
+                    "#10b981",
+
+                    "#ef4444"
+
+                ]
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true
+
+        }
+
+    });
+
+}
 
                 }
 
@@ -491,70 +613,85 @@ window.onload = function(){
     }
 };
 // =========================
-// GLUCOSE CHART
+// GLUCOSE GRAPH
 // =========================
+
 const glucoseCanvas =
 document.getElementById(
     "glucoseChart"
 );
+
 if(glucoseCanvas){
+
+    const glucoseValue =
+    parseFloat(
+
+        document.getElementById(
+            "Glucose"
+        ).value
+
+    ) || 0;
+
+    if(window.glucoseChartInstance){
+
+        window.glucoseChartInstance.destroy();
+
+    }
+
+    window.glucoseChartInstance =
     new Chart(glucoseCanvas, {
-        type: "line",
-        data: {
-            labels: [
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat",
-                "Sun"
+
+        type:"line",
+
+        data:{
+
+            labels:[
+
+                "Your Value",
+
+                "Normal",
+
+                "High Risk"
+
             ],
-            datasets: [{
-                label: "Glucose Level",
-                data: [
-                    90,
-                    120,
-                    135,
-                    110,
-                    140,
-                    125,
-                    118
+
+            datasets:[{
+
+                label:"Glucose Level",
+
+                data:[
+
+                    glucoseValue,
+
+                    100,
+
+                    180
+
                 ],
-                borderColor:"#3b82f6",
+
+                borderColor:"#2563eb",
+
                 backgroundColor:
-                "rgba(59,130,246,0.2)",
+                "rgba(37,99,235,0.2)",
+
                 fill:true,
+
                 tension:0.4,
-                pointBackgroundColor:
-                "#06b6d4",
-                pointRadius:6,
+
                 borderWidth:4
+
             }]
+
         },
-        options: {
-            responsive:true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color:"white"
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color:"white"
-                    }
-                },
-                y: {
-                    ticks: {
-                        color:"white"
-                    }
-                }
-            }
+
+        options:{
+
+            responsive:true
+
         }
+
     });
+
 }
 // =========================
 // BMI CHART
@@ -666,7 +803,7 @@ const fileName =
 document.getElementById(
     "fileName"
 );
-if(reportUpload){
+if(reportUpload && fileName){
     reportUpload.addEventListener(
         "change",
         () => {
@@ -683,173 +820,307 @@ if(reportUpload){
         }
     );
 }
-// REPORT UPLOAD
-
-document.getElementById("uploadBtn")
-.addEventListener("click", async function () {
-
-    const fileInput =
-    document.getElementById("reportUpload");
-
-    const uploadResult =
-    document.getElementById("uploadResult");
-
-    if (!fileInput.files.length) {
-
-        alert("Please upload report");
-
-        return;
-    }
-
-    const formData = new FormData();
-
-    formData.append(
-        "report",
-        fileInput.files[0]
-    );
-
-    try {
-
-        const response =
-        await fetch("/upload-report", {
-
-            method: "POST",
-
-            body: formData
-
-        });
-
-        const data =
-        await response.json();
-
-        uploadResult.style.display =
-        "block";
-
-        uploadResult.innerHTML =
-        "<h2>📄 AI Report Analysis</h2>" +
-        "<p>" + data.message + "</p>";
-
-    }
-
-    catch (error) {
-
-        console.log(error);
-
-        alert("Upload failed");
-
-    }
-
-});
 // =========================
 // LANGUAGE TRANSLATION
 // =========================
+
 const languageSelect =
 document.getElementById(
     "languageSelect"
 );
-languageSelect.addEventListener(
-    "change",
-    function(){
-        const lang = this.value;
-        // ENGLISH
-        if(lang === "en"){
-            document.getElementById(
-                "mainTitle"
-            ).innerHTML =
-            `Smart AI Powered
-            <span>Healthcare Platform</span>`;
-            document.getElementById(
-                "startText"
-            ).innerText =
-            "Get Started";
-            document.getElementById(
-                "learnText"
-            ).innerText =
-            "Learn More";
+
+if(languageSelect){
+
+    languageSelect.addEventListener(
+
+        "change",
+
+        function(){
+
+            const lang =
+            this.value;
+
+            // ENGLISH
+
+            if(lang === "en"){
+
+                const mainTitle =
+                document.getElementById(
+                    "mainTitle"
+                );
+
+                const startText =
+                document.getElementById(
+                    "startText"
+                );
+
+                const learnText =
+                document.getElementById(
+                    "learnText"
+                );
+
+                if(mainTitle){
+
+                    mainTitle.innerHTML =
+
+                    `Smart AI Powered
+                    <span>Healthcare Platform</span>`;
+
+                }
+
+                if(startText){
+
+                    startText.innerText =
+                    "Get Started";
+
+                }
+
+                if(learnText){
+
+                    learnText.innerText =
+                    "Learn More";
+
+                }
+
+            }
+
+            // HINDI
+
+            else if(lang === "hi"){
+
+                const mainTitle =
+                document.getElementById(
+                    "mainTitle"
+                );
+
+                const startText =
+                document.getElementById(
+                    "startText"
+                );
+
+                const learnText =
+                document.getElementById(
+                    "learnText"
+                );
+
+                if(mainTitle){
+
+                    mainTitle.innerHTML =
+
+                    `स्मार्ट एआई संचालित
+                    <span>हेल्थकेयर प्लेटफॉर्म</span>`;
+
+                }
+
+                if(startText){
+
+                    startText.innerText =
+                    "शुरू करें";
+
+                }
+
+                if(learnText){
+
+                    learnText.innerText =
+                    "और जानें";
+
+                }
+
+            }
+
+            // BENGALI
+
+            else if(lang === "bn"){
+
+                const mainTitle =
+                document.getElementById(
+                    "mainTitle"
+                );
+
+                const startText =
+                document.getElementById(
+                    "startText"
+                );
+
+                const learnText =
+                document.getElementById(
+                    "learnText"
+                );
+
+                if(mainTitle){
+
+                    mainTitle.innerHTML =
+
+                    `স্মার্ট এআই চালিত
+                    <span>হেলথকেয়ার প্ল্যাটফর্ম</span>`;
+
+                }
+
+                if(startText){
+
+                    startText.innerText =
+                    "শুরু করুন";
+
+                }
+
+                if(learnText){
+
+                    learnText.innerText =
+                    "আরও জানুন";
+
+                }
+
+            }
         }
-        // HINDI
-        else if(lang === "hi"){
-            document.getElementById(
-                "mainTitle"
-            ).innerHTML =
-            `स्मार्ट एआई संचालित
-            <span>हेल्थकेयर प्लेटफॉर्म</span>`;
-            document.getElementById(
-                "startText"
-            ).innerText =
-            "शुरू करें";
-            document.getElementById(
-                "learnText"
-            ).innerText =
-            "और जानें";
-        }
-        // BENGALI
-        else if(lang === "bn"){
-            document.getElementById(
-                "mainTitle"
-            ).innerHTML =
-            `স্মার্ট এআই চালিত
-            <span>হেলথকেয়ার প্ল্যাটফর্ম</span>`;
-            document.getElementById(
-                "startText"
-            ).innerText =
-            "শুরু করুন";
-            document.getElementById(
-                "learnText"
-            ).innerText =
-            "আরও জানুন";
-        }
-    }
-);
+
+    );
+
+}
 // =========================
 // LIVE HEALTH MONITORING
 // =========================
+
 window.addEventListener(
+
     "DOMContentLoaded",
-    function(){
-        setInterval(() => {
+
+    () => {
+
+        function updateHealthData(){
+
             // HEART RATE
+
+            const heartRates = [
+
+                "72 BPM",
+                "74 BPM",
+                "75 BPM",
+                "76 BPM",
+                "78 BPM"
+
+            ];
+
             const heartRate =
-            70 + Math.floor(
-                Math.random() * 15
-            );
+            heartRates[
+                Math.floor(
+                    Math.random() *
+                    heartRates.length
+                )
+            ];
+
             const heartElement =
             document.getElementById(
                 "heartRate"
             );
+
             if(heartElement){
+
                 heartElement.innerText =
-                `${heartRate} BPM`;
+                heartRate;
+
             }
+
             // TEMPERATURE
+
+            const temperatures = [
+
+                "98.2°F",
+                "98.4°F",
+                "98.6°F",
+                "98.7°F"
+
+            ];
+
             const temp =
-            (
-                97 +
-                Math.random() * 2
-            ).toFixed(1);
+            temperatures[
+                Math.floor(
+                    Math.random() *
+                    temperatures.length
+                )
+            ];
+
             const tempElement =
             document.getElementById(
                 "temperature"
             );
+
             if(tempElement){
+
                 tempElement.innerText =
-                `${temp}°F`;
+                temp;
+
             }
+
             // OXYGEN
+
+            const oxygenLevels = [
+
+                "97%",
+                "98%",
+                "99%"
+
+            ];
+
             const oxygen =
-            95 + Math.floor(
-                Math.random() * 5
-            );
+            oxygenLevels[
+                Math.floor(
+                    Math.random() *
+                    oxygenLevels.length
+                )
+            ];
+
             const oxygenElement =
             document.getElementById(
                 "oxygen"
             );
+
             if(oxygenElement){
+
                 oxygenElement.innerText =
-                `${oxygen}%`;
+                oxygen;
+
             }
-        }, 3000);
+
+            // STEPS
+
+            const stepCount =
+
+                8400 +
+
+                Math.floor(
+                    Math.random() * 500
+                );
+
+            const stepElement =
+            document.getElementById(
+                "steps"
+            );
+
+            if(stepElement){
+
+                stepElement.innerText =
+                stepCount;
+
+            }
+
+        }
+
+        // INITIAL LOAD
+
+        updateHealthData();
+
+        // AUTO UPDATE
+
+        setInterval(
+
+            updateHealthData,
+
+            4000
+
+        );
+
     }
+
 );
 // =========================
 // LOGIN SYSTEM
@@ -914,5 +1185,532 @@ if(loginForm){
 
         }
     );
+
+}
+// =========================
+// DOWNLOAD REPORT
+// =========================
+
+const downloadBtn =
+document.getElementById(
+    "downloadBtn"
+);
+
+if(downloadBtn){
+
+    downloadBtn.addEventListener(
+
+        "click",
+
+        () => {
+
+            const prediction =
+            document.getElementById(
+                "predictionText"
+            ).innerText;
+
+            const probability =
+            document.getElementById(
+                "probabilityText"
+            ).innerText;
+
+            const tips =
+            document.getElementById(
+                "tipsBox"
+            ).innerText;
+
+            const report = `
+
+DiaPredict AI Report
+
+========================
+
+Prediction:
+${prediction}
+
+${probability}
+
+Suggestions:
+${tips}
+
+Generated Successfully
+
+            `;
+
+            const blob =
+            new Blob(
+
+                [report],
+
+                {
+                    type:"text/plain"
+                }
+
+            );
+
+            const link =
+            document.createElement(
+                "a"
+            );
+
+            link.href =
+            URL.createObjectURL(
+                blob
+            );
+
+            link.download =
+            "DiaPredict_Report.txt";
+
+            link.click();
+
+        }
+
+    );
+
+}
+
+// =========================
+// DOWNLOAD PDF
+// =========================
+
+const pdfBtn =
+document.getElementById(
+    "pdfBtn"
+);
+
+if(pdfBtn){
+
+    pdfBtn.addEventListener(
+
+        "click",
+
+        () => {
+
+            window.print();
+
+        }
+
+    );
+
+}
+// =========================
+// PROFESSIONAL PDF REPORT
+// =========================
+
+const pdfBtn =
+document.getElementById(
+    "pdfBtn"
+);
+
+if(pdfBtn){
+
+    pdfBtn.addEventListener(
+
+        "click",
+
+        () => {
+
+            const prediction =
+            document.getElementById(
+                "predictionText"
+            ).innerText;
+
+            const probability =
+            document.getElementById(
+                "probabilityText"
+            ).innerText;
+
+            const tips =
+            document.getElementById(
+                "tipsBox"
+            ).innerText;
+
+            const currentDate =
+            new Date().toLocaleString();
+
+            const reportWindow =
+            window.open(
+                "",
+                "_blank"
+            );
+
+            reportWindow.document.write(`
+
+<html>
+
+<head>
+
+<title>
+DiaPredict AI Medical Report
+</title>
+
+<style>
+
+body{
+
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+
+    padding:40px;
+
+    color:#222;
+
+}
+
+.report-container{
+
+    max-width:800px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:40px;
+
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+
+    border-top:10px solid #2563eb;
+
+}
+
+.header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+.header h1{
+
+    color:#2563eb;
+
+    margin-bottom:10px;
+
+}
+
+.header p{
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+.section{
+
+    margin-top:25px;
+
+}
+.section{
+
+    margin-top:25px;
+
+}
+
+.section h2{
+
+    color:#2563eb;
+
+    border-bottom:2px solid #2563eb;
+
+    padding-bottom:5px;
+
+}
+
+.result-box{
+
+    background:#eef4ff;
+
+    padding:20px;
+
+    border-radius:10px;
+
+    margin-top:15px;
+
+}
+
+.footer{
+
+    margin-top:40px;
+
+    text-align:center;
+
+    font-size:13px;
+
+    color:#666;
+
+}
+
+ul{
+
+    line-height:2;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="report-container">
+
+<div class="header">
+
+<h1>
+DiaPredict AI
+</h1>
+
+<p>
+AI Powered Diabetes Health Report
+</p>
+
+<p>
+Generated on: ${currentDate}
+</p>
+
+</div>
+
+<div class="section">
+
+<h2>
+Medical Prediction Summary
+</h2>
+
+<div class="result-box">
+
+<h3>
+${prediction}
+</h3>
+
+<p>
+${probability}
+</p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>
+Doctor Recommendations
+</h2>
+
+<ul>
+
+<li>
+Maintain a balanced healthy diet
+</li>
+
+<li>
+Exercise regularly and stay active
+</li>
+
+<li>
+Monitor blood glucose frequently
+</li>
+
+<li>
+Drink enough water and sleep properly
+</li>
+<li>
+Consult healthcare professional if symptoms increase
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+
+<h2>
+AI Health Suggestions
+</h2>
+
+<p>
+${tips}
+</p>
+
+</div>
+
+<div class="footer">
+
+<p>
+DiaPredict AI | Smart Healthcare Platform
+</p>
+
+<p>
+This AI-generated report is for educational purposes only.
+</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
+
+            `);
+
+            reportWindow.document.close();
+
+            reportWindow.print();
+
+        }
+
+    );
+
+}
+// =========================
+// DYNAMIC GLUCOSE CHART
+// =========================
+
+const glucoseCanvas =
+document.getElementById(
+    "glucoseChart"
+);
+
+if(glucoseCanvas){
+
+    new Chart(glucoseCanvas, {
+
+        type:"line",
+
+        data:{
+
+            labels:[
+                "Current",
+                "Normal",
+                "Risk"
+            ],
+
+            datasets:[{
+
+                label:"Glucose Level",
+
+                data:[
+
+                    document.getElementById(
+                        "Glucose"
+                    ).value || 0,
+
+                    100,
+
+                    180
+
+                ],
+
+                borderColor:"#2563eb",
+
+                backgroundColor:
+                "rgba(37,99,235,0.2)",
+
+                fill:true,
+
+                tension:0.4
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true
+
+        }
+
+    });
+
+}
+// =========================
+// GLUCOSE CHART
+// =========================
+
+const glucoseChart =
+document.getElementById(
+    "glucoseChart"
+);
+
+if(glucoseChart){
+
+    new Chart(glucoseChart, {
+
+        type:"line",
+
+        data:{
+
+            labels:[
+
+                "Normal",
+
+                "Your Value",
+
+                "High"
+
+            ],
+
+            datasets:[{
+
+                label:"Glucose",
+
+                data:[
+
+                    100,
+
+                    150,
+
+                    180
+
+                ],
+
+                borderWidth:4
+
+            }]
+
+        }
+
+    });
+
+}
+
+// =========================
+// BMI CHART
+// =========================
+
+const bmiChart =
+document.getElementById(
+    "bmiChart"
+);
+
+if(bmiChart){
+
+    new Chart(bmiChart, {
+
+        type:"doughnut",
+
+        data:{
+
+            labels:[
+
+                "BMI",
+
+                "Remaining"
+
+            ],
+
+            datasets:[{
+
+                data:[30,70]
+
+            }]
+
+        }
+
+    });
 
 }

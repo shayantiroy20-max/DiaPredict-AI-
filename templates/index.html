@@ -239,8 +239,13 @@
             <!-- Result -->
             <div class="result-box"
                  id="resultBox">
+            <div class="chart-container">
+                <canvas id="glucoseChart"></canvas>
+            </div>
                 <h2 id="predictionText"></h2>
                 <p id="probabilityText"></p>
+                <p id="glucoseTrend"></p>
+                <p id="bmiAnalysis"></p>
                 <div class="meter-container">
                     <div class="meter-bar"
                          id="meterBar"></div>
@@ -397,117 +402,8 @@
             </button>
         </div>
     </section>
-    <!-- =========================
-     HEALTH ANALYTICS
-========================= -->
-
-<section class="analytics-section">
-
-    <div class="analytics-header">
-
-        <h2>
-            📊 Real-Time Health Analytics
-        </h2>
-
-        <p>
-
-            AI-powered healthcare monitoring
-            and smart health visualization.
-
-        </p>
-
-    </div>
-
-    <div class="analytics-grid">
-
-        <!-- GLUCOSE -->
-
-        <div class="analytics-card">
-
-            <h3>
-                🩸 Glucose Trend
-            </h3>
-
-            <canvas id="glucoseChart"></canvas>
-
-        </div>
-
-        <!-- BMI -->
-
-        <div class="analytics-card">
-
-            <h3>
-                ⚖ BMI Analysis
-            </h3>
-
-            <canvas id="bmiChart"></canvas>
-
-        </div>
-
-    </div>
-
-</section>
-    <!-- =========================
-     LIVE HEALTH MONITORING
-========================= -->
-<section class="monitor-section">
-    <div class="monitor-header">
-        <h2>
-            ❤️ Live Health Monitoring
-        </h2>
-        <p>
-            AI-powered real-time monitoring
-            for smarter healthcare insights.
-        </p>
-    </div>
-    <div class="monitor-grid">
-        <!-- HEART RATE -->
-        <div class="monitor-card">
-            <div class="monitor-icon">
-                ❤️
-            </div>
-            <h3>
-                Heart Rate
-            </h3>
-            <h1 id="heartRate">
-                78 BPM
-            </h1>
-            <div class="pulse-bar">
-                <div class="pulse-fill"></div>
-            </div>
-        </div>
-        <!-- TEMPERATURE -->
-        <div class="monitor-card">
-            <div class="monitor-icon">
-                🌡
-            </div>
-            <h3>
-                Body Temperature
-            </h3>
-            <h1 id="temperature">
-                98.4°F
-            </h1>
-            <div class="temp-bar">
-                <div class="temp-fill"></div>
-            </div>
-        </div>
-        <!-- OXYGEN -->
-        <div class="monitor-card">
-            <div class="monitor-icon">
-                🫁
-            </div>
-            <h3>
-                Oxygen Level
-            </h3>
-            <h1 id="oxygen">
-                98%
-            </h1>
-            <div class="oxygen-bar">
-                <div class="oxygen-fill"></div>
-            </div>
-        </div>
-    </div>
-</section>
+    
+    
     <!-- =========================
          RESEARCH
     ========================= -->
@@ -858,6 +754,91 @@ function googleTranslateElementInit() {
 </script>
 <script type="text/javascript"
 src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+<script>
+<canvas id="testChart"></canvas>
+const ctx =
+document.getElementById(
+    "testChart"
+);
+
+new Chart(ctx, {
+
+    type:"bar",
+
+    data:{
+
+        labels:[
+
+            "A",
+
+            "B",
+
+            "C"
+
+        ],
+
+        datasets:[{
+
+            label:"Test Graph",
+
+            data:[10,20,30]
+
+        }]
+
+    }
+
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+window.onload = function(){
+
+    const glucoseCanvas =
+    document.getElementById(
+        "glucoseChart"
+    );
+
+    if(glucoseCanvas){
+
+        new Chart(glucoseCanvas, {
+
+            type:"bar",
+
+            data:{
+
+                labels:[
+
+                    "Normal",
+
+                    "Your Value",
+
+                    "High"
+
+                ],
+
+                datasets:[{
+
+                    label:"Glucose Level",
+
+                    data:[100,150,180]
+
+                }]
+
+            }
+
+        });
+
+    }
+
+};
+
 </script>
 </body>
 </html>

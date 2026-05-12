@@ -3077,3 +3077,18 @@ img{
     gap:14px !important;
 
 }
+.chart-container{
+
+    width:100%;
+
+    max-width:700px;
+
+    margin:30px auto;
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}

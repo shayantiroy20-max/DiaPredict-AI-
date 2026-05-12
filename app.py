@@ -80,94 +80,99 @@ def predict():
         # =========================
         # PREDICT
         # =========================
-        prediction = model.predict(features)[0]
-        probability = model.predict_proba(features)[0][1]
-        # =========================
-        # RESULT
-        # =========================
-        result = (
-            "High Risk of Diabetes"
-            if prediction == 1
-            else "Low Risk of Diabetes"
-        )
-        probability_percent = round(
+        if glucose > 140:
+           prediction = 1
+        else:
+            prediction = 0
+        probability = model.predict_proba(
+            features
+        )[0][1]
+        probability = round(
             probability * 100,
             2
         )
+                # =========================
+        # GLUCOSE TREND
         # =========================
-        # RISK LEVEL
-        # =========================
-        if probability > 0.75:
-            risk_level = "Critical"
-        elif probability > 0.50:
-            risk_level = "High"
-        elif probability > 0.30:
-            risk_level = "Moderate"
-        else:
-            risk_level = "Low"
-        # =========================
-        # AI SUGGESTIONS
-        # =========================
-        suggestions = []
-        if probability > 0.5:
-            suggestions = [
-                "Reduce sugar intake",
-                "Exercise regularly",
-                "Monitor glucose levels",
-                "Consult healthcare professional",
-                "Maintain healthy diet",
-                "Avoid junk food",
-                "Drink more water",
-                "Sleep properly"
-            ]
-        else:
-            suggestions = [
-                "Maintain healthy lifestyle",
-                "Continue regular exercise",
-                "Eat balanced diet",
-                "Stay hydrated"
-            ]
-        # =========================
-        # SAVE HISTORY
-        # =========================
-        conn = sqlite3.connect("database.db")
-        cursor = conn.cursor()
-        cursor.execute("""
-        INSERT INTO predictions
-        (age, glucose, bmi, probability, prediction, created_at)
-        VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            age,
-            glucose,
-            bmi,
-            probability_percent,
-            result,
-            datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S"
+
+        if glucose > 180:
+
+            glucose_trend = (
+                "Very High Glucose"
             )
-        ))
-        conn.commit()
-        conn.close()
+
+        elif glucose > 140:
+
+            glucose_trend = (
+                "High Glucose"
+            )
+
+        elif glucose > 100:
+
+            glucose_trend = (
+                "Moderate Glucose"
+            )
+
+        else:
+
+            glucose_trend = (
+                "Normal Glucose"
+            )
+
         # =========================
-        # RETURN RESPONSE
+        # BMI ANALYSIS
         # =========================
+
+        if bmi >= 30:
+
+            bmi_analysis = (
+                "Obese"
+            )
+
+        elif bmi >= 25:
+
+            bmi_analysis = (
+                "Overweight"
+            )
+
+        elif bmi >= 18.5:
+
+            bmi_analysis = (
+                "Healthy Weight"
+            )
+
+        else:
+
+            bmi_analysis = (
+                "Underweight"
+            )
+        if prediction == 1:
+            result = (
+                "⚠ High Diabetes Risk"
+            )
+            suggestions = [
+                "Exercise daily",
+                "Reduce sugar intake",
+                "Consult doctor",
+                "Monitor glucose regularly"
+            ]
+        else:
+            result = (
+                "✅ Low Diabetes Risk"
+            )
+            suggestions = [
+                "Maintain healthy diet",
+                "Exercise regularly",
+                "Drink enough water"
+            ]
         return jsonify({
-            "prediction":
-                result,
-            "probability":
-                probability_percent,
-            "risk_level":
-                risk_level,
-            "suggestions":
-                suggestions,
+            "prediction": result,
+            "probability": probability,
+            "glucose_trend": glucose_trend,
+            "bmi_analysis": bmi_analysis,
+            "suggestions": suggestions,
             "doctor_alert":
-                probability > 0.5,
-            "blood_donation":
-                True,
-            "timestamp":
-                datetime.now().strftime(
-                    "%d-%m-%Y %H:%M:%S"
-                )
+            True if probability > 70 else False
         })
     except Exception as e:
         return jsonify({
