@@ -961,8 +961,9 @@ footer{
 ========================= */
 .team-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
+    grid-template-columns:
+    repeat(3,1fr);
+    gap:30px;
     margin-top:40px;
 }
 .team-card{
@@ -1302,15 +1303,14 @@ footer{
     opacity:0.85;
 
 }
-
 .team-grid{
 
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(320px,1fr));
+    repeat(3,minmax(0,1fr));
 
-    gap:35px;
+    gap:25px;
 
 }
 
@@ -1345,13 +1345,25 @@ footer{
     padding:28px;
 }
 .team-content h3{
-    font-size:1.5rem;
-    margin-bottom:15px;
+
+    font-size:30px;
+
+    color:white;
+
+    margin-bottom:14px;
+
 }
+
 .team-content p{
-    line-height:1.8;
+
+    color:#d1d5db;
+
+    font-size:18px;
+
+    line-height:1.7;
+
     margin-bottom:25px;
-    opacity:0.9;
+
 }
 /* BUTTONS */
 .specialist-btn,
@@ -2854,14 +2866,18 @@ img{
 }
 
 /* HEALTHCARE TEAM */
-
 .team-section{
 
-    padding-top:40px !important;
+    width:100%;
 
-    padding-bottom:40px !important;
+    max-width:1600px;
+
+    margin:auto;
+
+    padding:80px 40px;
 
 }
+
 
 /* HEALTHCARE SERVICES */
 
@@ -3009,9 +3025,13 @@ img{
 
 .team-section{
 
-    padding-top:25px !important;
+    width:100%;
 
-    padding-bottom:25px !important;
+    max-width:1600px;
+
+    margin:auto;
+
+    padding:60px 30px;
 
 }
 
@@ -3077,18 +3097,293 @@ img{
     gap:14px !important;
 
 }
-.chart-container{
+/* =========================
+   HEALTHCARE TEAM SECTION
+========================= */
+
+.team-section{
+
+    padding:90px 6%;
+
+}
+
+/* HEADER */
+
+.team-header{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+.team-header h2{
+
+    font-size:48px;
+
+    color:white;
+
+    margin-bottom:18px;
+
+}
+
+.team-header p{
+
+    color:#d1d5db;
+
+    font-size:20px;
+
+    max-width:850px;
+
+    margin:auto;
+
+    line-height:1.8;
+
+}
+
+/* GRID */
+.team-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+    gap:20px;
 
     width:100%;
 
-    max-width:700px;
+    align-items:stretch;
 
-    margin:30px auto;
+}
+/* CARD */
+.team-card{
 
-    background:white;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
 
-    padding:20px;
+    border-radius:30px;
 
-    border-radius:15px;
+    overflow:hidden;
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,0.25);
+
+    transition:0.4s ease;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+/* HOVER */
+
+.team-card:hover{
+
+    transform:
+    translateY(-8px);
+
+}
+
+/* IMAGE */
+
+.team-card img{
+
+    width:100%;
+
+    height:200px;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+/* CONTENT */
+
+.team-content{
+
+    padding:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex-grow:1;
+
+    text-align:center;
+
+}
+
+/* TITLE */
+
+.team-content h3{
+
+    font-size:32px;
+
+    color:white;
+
+    margin-bottom:18px;
+
+    min-height:70px;
+
+}
+
+/* DESCRIPTION */
+
+.team-content p{
+
+    color:#d1d5db;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    margin-bottom:35px;
+
+    flex-grow:1;
+
+    min-height:120px;
+
+}
+
+/* BUTTONS */
+
+.specialist-btn,
+.nutrition-btn,
+.fitness-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:0.3s ease;
+
+}
+
+/* COLORS */
+
+.specialist-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+}
+
+.nutrition-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+
+}
+
+.fitness-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #f97316,
+        #ea580c
+    );
+
+}
+
+/* BUTTON HOVER */
+
+.specialist-btn:hover,
+.nutrition-btn:hover,
+.fitness-btn:hover{
+
+    transform:
+    scale(1.03);
+
+    opacity:0.92;
+
+}
+/* =========================
+   MOBILE SPACE FIX
+========================= */
+
+html,
+body{
+
+    overflow-x:hidden;
+
+    width:100%;
+
+}
+
+/* REMOVE EXTRA SIDE SPACE */
+
+*{
+
+    box-sizing:border-box;
+
+}
+
+/* MOBILE FIX */
+
+@media(max-width:768px){
+
+    body{
+
+        padding:0;
+
+        margin:0;
+
+    }
+
+    .container,
+    .hero,
+    .team-section,
+    .prediction-section,
+    .dashboard-section,
+    .symptom-section{
+
+        width:100%;
+
+        max-width:100%;
+
+        padding-left:15px;
+
+        padding-right:15px;
+
+        margin-left:auto;
+
+        margin-right:auto;
+
+    }
+
+    img{
+
+        max-width:100%;
+
+        height:auto;
+
+    }
 
 }

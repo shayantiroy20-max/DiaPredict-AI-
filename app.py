@@ -88,10 +88,10 @@ def predict():
             features
         )[0][1]
         probability = round(
-            probability * 100,
+            float(probability) * 100,
             2
         )
-                # =========================
+        # =========================
         # GLUCOSE TREND
         # =========================
 

@@ -7,7 +7,6 @@
     <title>DiaPredict AI</title>
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- =========================
@@ -250,9 +249,6 @@
                     <div class="meter-bar"
                          id="meterBar"></div>
                 </div>
-                <div class="risk-circle">
-                    <span id="riskValue">0%</span>
-                </div>
                 <div class="tips-box"
                      id="tipsBox"></div>
                 <div class="doctor-box"
@@ -266,14 +262,6 @@
                 <button id="voiceBtn"
                         class="voice-btn">
                     🔊 Voice Result
-                </button>
-                <button id="downloadBtn"
-                        class="download-btn">
-                    📄 Download Report
-                </button>
-                <button id="pdfBtn"
-                        class="pdf-btn">
-                    📕 Download PDF
                 </button>
             </div>
         </div>
@@ -303,10 +291,9 @@
                     Expert consultation for diabetes
                     diagnosis, treatment and monitoring.
                 </p>
-                <button class="specialist-btn"
-                        id="specialistBtn">
-                    Find Specialist
-                </button>
+                <button type="button" class="specialist-btn" onclick="window.open('https://www.google.com/maps/search/diabetes+specialist+near+me','_blank')">
+    Find Specialist
+</button>
             </div>
         </div>
         <!-- NUTRITIONIST -->
@@ -319,11 +306,10 @@
                     Get personalized meal plans
                     and healthy dietary guidance.
                 </p>
-                <button class="nutrition-btn"
-                        id="nutritionBtn">
-                    Find Nutritionist
-                </button>
-            </div>
+                <button type="button" class="nutrition-btn" onclick="window.open('https://www.google.com/maps/search/nutritionist+near+me','_blank')">
+    Find Nutritionist
+</button>
+            </div>  
         </div>
         <!-- FITNESS -->
         <div class="team-card">
@@ -335,15 +321,13 @@
                     Improve fitness, exercise habits
                     and maintain healthy lifestyle.
                 </p>
-                <button class="fitness-btn"
-                        id="fitnessBtn">
-                    Find Trainer
-                </button>
+                <button type="button" class="fitness-btn" onclick="window.open('https://www.google.com/maps/search/fitness+trainer+near+me','_blank')">
+    Find Trainer
+</button>
             </div>
         </div>
     </div>
 </section>
-
     <!-- =========================
          LIVING WITH DIABETES
     ========================= -->
@@ -363,7 +347,7 @@
                 </p>
             </div>
             <div class="feature-card">
-                <h>💧 Hydration</h3>
+                <h3>💧 Hydration</h3>
                 <p>
                     Drink enough water to maintain body balance.
                 </p>
@@ -446,10 +430,15 @@
                     📞 24x7 Healthcare Assistance
                 </div>
             </div>
-            <button id="sosBtn"
-                    class="sos-btn">
-                🚨 Activate Emergency SOS
-            </button>
+            <button
+type="button"
+class="sos-btn"
+
+onclick="activateSOS()">
+
+    🚨 Activate Emergency SOS
+
+</button>
         </div>
         <!-- RIGHT SIDE -->
         <div class="sos-right">
@@ -461,22 +450,68 @@
     <!-- =========================
      SYMPTOM CHECKER
 ========================= -->
+
 <section class="symptom-section">
-    <h2>🩺 Smart Symptom Checker</h2>
+
+    <h2>
+        🩺 Smart Symptom Checker
+    </h2>
+
     <div class="symptom-grid">
-        <label><input type="checkbox" value="Fatigue"> Fatigue</label>
-        <label><input type="checkbox" value="Frequent Thirst"> Frequent Thirst</label>
-        <label><input type="checkbox" value="Blurred Vision"> Blurred Vision</label>
-        <label><input type="checkbox" value="Weight Loss"> Weight Loss</label>
-        <label><input type="checkbox" value="Frequent Urination"> Frequent Urination</label>
-        <label><input type="checkbox" value="Headache"> Headache</label>
+
+        <label>
+            <input type="checkbox"
+                   value="Fatigue">
+            Fatigue
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   value="Frequent Thirst">
+            Frequent Thirst
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   value="Blurred Vision">
+            Blurred Vision
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   value="Weight Loss">
+            Weight Loss
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   value="Frequent Urination">
+            Frequent Urination
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   value="Headache">
+            Headache
+        </label>
+
     </div>
-    <button id="symptomBtn"
-            class="predict-btn">
+
+    <button
+    type="button"
+    class="predict-btn"
+
+    onclick="analyzeSymptoms()">
+
         Analyze Symptoms
+
     </button>
+
     <div id="symptomResult"
-         class="result-box"></div>
+         class="result-box">
+
+    </div>
+
 </section>
 <!-- =========================
      MEDICAL REPORT UPLOAD
@@ -679,6 +714,8 @@
         © 2026 DiaPredict AI |
         Intelligent Healthcare Platform
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/script.js"></script>
     <!-- =========================
         SCRIPT
     ========================= -->
@@ -755,46 +792,8 @@ function googleTranslateElementInit() {
 <script type="text/javascript"
 src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-<script>
-<canvas id="testChart"></canvas>
-const ctx =
-document.getElementById(
-    "testChart"
-);
-
-new Chart(ctx, {
-
-    type:"bar",
-
-    data:{
-
-        labels:[
-
-            "A",
-
-            "B",
-
-            "C"
-
-        ],
-
-        datasets:[{
-
-            label:"Test Graph",
-
-            data:[10,20,30]
-
-        }]
-
-    }
-
-});
-
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
@@ -838,6 +837,102 @@ window.onload = function(){
     }
 
 };
+
+</script>
+<script src="/static/script.js"></script>
+<script>
+
+function analyzeSymptoms(){
+
+    const checkedSymptoms =
+    document.querySelectorAll(
+        '.symptom-grid input:checked'
+    );
+
+    const resultBox =
+    document.getElementById(
+        'symptomResult'
+    );
+
+    let riskCount = 0;
+
+    checkedSymptoms.forEach(
+
+        (symptom) => {
+
+            const value =
+            symptom.value.toLowerCase();
+
+            if(
+
+                value.includes('fatigue') ||
+
+                value.includes('thirst') ||
+
+                value.includes('blurred') ||
+
+                value.includes('weight') ||
+
+                value.includes('urination')
+
+            ){
+
+                riskCount++;
+
+            }
+
+        }
+
+    );
+
+    let result =
+    "🟢 Low Diabetes Risk";
+
+    if(riskCount >= 3){
+
+        result =
+        "🔴 High Diabetes Risk";
+
+    }
+
+    else if(riskCount >= 1){
+
+        result =
+        "🟡 Moderate Diabetes Risk";
+
+    }
+
+    resultBox.style.display =
+    'block';
+
+    resultBox.innerHTML =
+
+    `<h3>${result}</h3>`;
+
+}
+
+</script>
+<script>
+
+function activateSOS(){
+
+    alert(
+
+        "🚨 Emergency SOS Activated!\n\n" +
+
+        "Nearest hospitals and emergency services notified."
+
+    );
+
+    window.open(
+
+        "https://www.google.com/maps/search/hospital+near+me",
+
+        "_blank"
+
+    );
+
+}
 
 </script>
 </body>
