@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>DiaPredict Dashboard</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<section class="dashboard-section">
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <div class="dashboard-header">
+        <div>
+            <h1>
+                👋 Welcome to DiaPredict Dashboard
+            </h1>
+            <p>
+                Your AI healthcare monitoring system is active.
+            </p>
+        </div>
+        <div class="dashboard-actions">
+            <a href="/">
+                <button class="download-btn">
+                    🏠 Home
+                </button>
+            </a>
+            <a href="/logout">
+                <button class="hospital-btn">
+                    🚪 Logout
+                </button>
+            </a>
+        </div>
+    </div>
+    <!-- =========================
+         STATS CARDS
+    ========================= -->
+    <div class="stats-grid">
+        <div class="stats-card">
+            <h2>📊 Total Predictions</h2>
+            <h1>24</h1>
+        </div>
+        <div class="stats-card">
+            <h2>⚠ High Risk Cases</h2>
+            <h1>8</h1>
+        </div>
+        <div class="stats-card">
+            <h2>✅ Low Risk Cases</h2>
+            <h1>16</h1>
+        </div>
+        <div class="stats-card">
+            <h2>📈 Avg Risk Score</h2>
+            <h1>42%</h1>
+        </div>
+    </div>
+    <!-- =========================
+         ANALYTICS CHARTS
+    ========================= -->
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>📈 Glucose Analytics</h2>
+            <canvas id="glucoseChart"></canvas>
+        </div>
+        <div class="dashboard-card">
+            <h2>⚖ BMI Analytics</h2>
+            <canvas id="bmiChart"></canvas>
+        </div>
+    </div>
+    <!-- =========================
+         HEALTH MONITORING
+    ========================= -->
+    <h2 class="dashboard-title">
+        ❤️ Real-Time Health Monitoring
+    </h2>
+    <div class="stats-grid">
+        <div class="stats-card">
+            <h2>❤️ Heart Rate</h2>
+            <h1>78 BPM</h1>
+        </div>
+        <div class="stats-card">
+            <h2>🌡 Temperature</h2>
+            <h1>98.6°F</h1>
+        </div>
+        <div class="stats-card">
+            <h2>🫁 Oxygen Level</h2>
+            <h1>97%</h1>
+        </div>
+        <div class="stats-card">
+            <h2>🚶 Steps Today</h2>
+            <h1>8421</h1>
+        </div>
+    </div>
+     <div class="dashboard-card recommendations-card">
+        <h2>🤖 AI Health Recommendations</h2>
+        <ul>
+            <li>🥗 Reduce sugar intake</li>
+            <li>🏃 Exercise 30 minutes daily</li>
+            <li>💧 Drink more water</li>
+            <li>😴 Maintain proper sleep cycle</li>
+            <li>🩺 Monitor glucose regularly</li>
+        </ul>
+    </div>
+    <!-- =========================
+         PREDICTION HISTORY
+    ========================= -->
+    <div class="dashboard-card history-card">
+        <h2>📋 Prediction History</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Glucose</th>
+                <th>BMI</th>
+                <th>Risk</th>
+            </tr>
+            <tr>
+                <td>09-05-2026</td>
+                <td>165</td>
+                <td>31</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>07-05-2026</td>
+                <td>112</td>
+                <td>24</td>
+                <td>Low</td>
+            </tr>
+            <tr>
+                <td>05-05-2026</td>
+                <td>142</td>
+                <td>29</td>
+                <td>Moderate</td>
+            </tr>
+        </table>
+    </div>
+      <!-- =========================
+         EMERGENCY SUPPORT
+    ========================= -->
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>🚑 Emergency Ambulance</h2>
+            <p>
+                Emergency medical support available.
+            </p>
+            <button class="hospital-btn">
+                Call 108
+            </button>
+        </div>
+        <div class="dashboard-card">
+            <h2>📞 Health Helpline</h2>
+            <p>
+                24x7 healthcare support system.
+            </p>
+            <button class="download-btn">
+                Call 104
+            </button>
+        </div>
+    </div>
+    <!-- =========================
+         HEALTHCARE TEAM
+    ========================= -->
+    <h2 class="dashboard-title">
+        👨‍⚕️ Your Healthcare Team
+    </h2>
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>🩺 Diabetologist</h2>
+            <button class="hospital-btn"
+                    onclick="window.open('/find-specialist')">
+                Find Specialist
+            </button>
+        </div>
+        <div class="dashboard-card">
+            <h2>🥗 Nutritionist</h2>
+            <button class="download-btn"
+                    onclick="window.open('/find-nutritionist')">
+                Find Nutritionist
+            </button>
+        </div>
+        <div class="dashboard-card">
+            <h2>🏋 Fitness Expert</h2>
+            <button class="voice-btn"
+                    onclick="window.open('/find-fitness')">
+                Find Trainer
+            </button>
+        </div>
+    </div>
+    </div>
+</section>
+<!-- =========================
+     CHARTS SCRIPT
+========================= -->
+<script>
+// Glucose Chart
+new Chart(document.getElementById("glucoseChart"), {
+    type: "line",
+    data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        datasets: [{
+            label: "Glucose",
+            data: [120, 140, 110, 160, 130, 145],
+            borderWidth: 3
+        }]
+    }
+});
+// BMI Chart
+new Chart(document.getElementById("bmiChart"), {
+    type: "bar",
+    data: {
+        labels: ["Week1", "Week2", "Week3", "Week4"],
+        datasets: [{
+            label: "BMI",
+            data: [29, 28, 27, 26],
+            borderWidth: 2
+        }]
+    }
+});
+</script>
+</body>
+</html>

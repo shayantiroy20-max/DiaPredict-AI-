@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>DiaPredict AI</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- =========================
+         FLOATING BACKGROUND
+    ========================= -->
+    <div class="floating floating1"></div>
+    <div class="floating floating2"></div>
+    <div class="floating floating3"></div>
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+    <!-- LANGUAGE TRANSLATOR -->
+    <div id="google_translate_element"></div>
+    <nav class="navbar">
+    <div class="logo-section">
+    <h1 class="logo">
+        🩺 DiaPredict AI
+    </h1>
+    <div class="translator-wrapper">
+        <div id="google_translate_element"></div>
+    </div>
+</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <button id="themeToggle"
+            class="theme-btn">
+        🌙 Theme
+        </button>
+    </div>
+</nav>
+    <!-- =========================
+         HERO SECTION
+    ========================= -->
+    <section class="hero">
+        <div class="hero-left">
+            <h1 id="mainTitle">
+                Smart AI Powered
+                <span>Healthcare Platform</span>
+            </h1>
+            <div class="hero-buttons">
+                <button class="start-btn"
+                        id="startBtn">
+                    <span id="startText"></span>
+                        Get Started
+                    </span>
+                </button>
+                <button class="learn-btn"
+                        id="learnBtn">
+                     <span id="learnText"></span>
+                        Learn More
+                    </span>    
+                </button>
+            </div>
+        </div>
+        <div class="hero-right">
+            <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1200&auto=format&fit=crop"
+                 alt="Healthcare">
+        </div>
+    </section>
+    
+    <!-- =========================
+         ABOUT US
+    ========================= -->
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1200&auto=format&fit=crop"
+                     alt="Healthcare Team">
+            </div>
+            <div class="about-content">
+                <h2>🏥 About Us</h2>
+                <p>
+                    DiaPredict AI is an intelligent AI-powered healthcare
+                    platform developed to help users estimate diabetes risk,
+                    monitor health conditions and improve healthcare awareness.
+                </p>
+                <p>
+                    Our system combines Machine Learning, Healthcare Analytics,
+                    Smart Monitoring and AI Assistance to provide
+                    a complete healthcare ecosystem.
+                </p>
+              <h3>📬 Contact Us</h3>
+<div class="contact-links">
+    <!-- Email -->
+    <div class="contact-item">
+        <img
+        src="https://cdn-icons-png.flaticon.com/512/732/732200.png"
+        alt="Email">
+        <a href="mailto:shayantiroy20@gmail.com">
+            shayantiroy20@gmail.com
+        </a>
+    </div>
+    <!-- Instagram -->
+    <div class="contact-item">
+        <img
+        src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+        alt="Instagram">
+        <a href="https://www.instagram.com/shayantiroy118?igsh=MTVob21scnVqcHJ6aQ=="
+           target="_blank">
+            Instagram
+        </a>
+    </div>
+    <!-- Facebook -->
+    <div class="contact-item">
+        <img
+        src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+        alt="Facebook">
+        <a href="https://facebook.com"
+           target="_blank">
+            Facebook
+        </a>
+    </div>
+</div>
+    </section>
+    <!-- =========================
+         ABOUT DIABETES
+    ========================= -->
+    <section class="diabetes-section">
+        <h2>🩸 About Diabetes</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>What is Diabetes?</h3>
+                <p>
+                    Diabetes is a chronic disease where blood sugar levels
+                    become too high because the body cannot properly
+                    produce or use insulin.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>Symptoms</h3>
+                <p>
+                    Frequent urination, thirst, fatigue, blurred vision,
+                    slow healing wounds and weight loss.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>Risk Factors</h3>
+                <p>
+                    Obesity, unhealthy diet, lack of exercise,
+                    genetics and hypertension increase diabetes risk.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- =========================
+         PREDICTION SECTION
+    ========================= -->
+    <section class="prediction-section">
+        <div class="card">
+            <h2>🧠 Diabetes Risk Prediction</h2>
+            <!-- Controls -->
+            <div class="top-controls">
+                <div class="select-box">
+                </div>
+                <div class="select-box">
+                    <label>Gender</label>
+                    <select id="genderSelect">
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Form -->
+            <form id="predictionForm">
+                <div class="input-grid">
+                    <div class="input-box"
+                         id="pregnancyBox">
+                        <label>Pregnancies</label>
+                        <input type="number"
+                               id="Pregnancies"
+                               placeholder="Pregnancies">
+                    </div>
+                    <div class="input-box">
+                        <label>Glucose</label>
+                        <input type="number"
+                               id="Glucose"
+                               placeholder="Glucose">
+                    </div>
+                    <div class="input-box">
+                        <label>Blood Pressure</label>
+                        <input type="number"
+                               id="BloodPressure"
+                               placeholder="Blood Pressure">
+                    </div>
+                    <div class="input-box">
+                        <label>Skin Thickness</label>
+                        <input type="number"
+                               id="SkinThickness"
+                               placeholder="Skin Thickness">
+                    </div>
+                    <div class="input-box">
+                        <label>Insulin</label>
+                        <input type="number"
+                               id="Insulin"
+                               placeholder="Insulin">
+                    </div>
+                    <div class="input-box">
+                        <label>BMI</label>
+                        <input type="number"
+                               step="0.1"
+                               id="BMI"
+                               placeholder="BMI">
+                    </div>
+                    <div class="input-box">
+                        <label>DPF</label>
+                        <input type="number"
+                               step="0.01"
+                               id="DPF"
+                               placeholder="DPF">
+                    </div>
+                    <div class="input-box">
+                        <label>Age</label>
+                        <input type="number"
+                               id="Age"
+                               placeholder="Age">
+                    </div>
+                </div>
+                <button type="submit"
+                        class="predict-btn">
+                    Predict Diabetes
+                </button>
+            </form>
+            <!-- Loader -->
+            <div class="loader"
+                 id="loader"></div>
+            <!-- Result -->
+            <div class="result-box"
+                 id="resultBox">
+                <h2 id="predictionText"></h2>
+                <p id="probabilityText"></p>
+                <div class="meter-container">
+                    <div class="meter-bar"
+                         id="meterBar"></div>
+                </div>
+                <div class="risk-circle">
+                    <span id="riskValue">0%</span>
+                </div>
+                <div class="tips-box"
+                     id="tipsBox"></div>
+                <div class="doctor-box"
+                     id="doctorBox">
+                    ⚠ Please consult a doctor immediately.
+                </div>
+                <div class="donate-box"
+                     id="donateBox">
+                    ❤️ Donate blood if possible to support patients.
+                </div>
+                <button id="voiceBtn"
+                        class="voice-btn">
+                    🔊 Voice Result
+                </button>
+                <button id="downloadBtn"
+                        class="download-btn">
+                    📄 Download Report
+                </button>
+                <button id="pdfBtn"
+                        class="pdf-btn">
+                    📕 Download PDF
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- =========================
+     HEALTHCARE TEAM
+========================= -->
+<section class="team-section">
+    <div class="team-header">
+        <h2>
+            👨‍⚕️ Find Your Healthcare Team
+        </h2>
+        <p>
+            Connect with trusted healthcare experts
+            for personalized diabetes care,
+            nutrition guidance and fitness support.
+        </p>
+    </div>
+    <div class="team-grid">
+        <!-- SPECIALIST -->
+        <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1200&auto=format&fit=crop"
+                 alt="Diabetologist">
+            <div class="team-content">
+                <h3>🩺 Diabetes Specialist</h3>
+                <p>
+                    Expert consultation for diabetes
+                    diagnosis, treatment and monitoring.
+                </p>
+                <button class="specialist-btn"
+                        id="specialistBtn">
+                    Find Specialist
+                </button>
+            </div>
+        </div>
+        <!-- NUTRITIONIST -->
+        <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200&auto=format&fit=crop"
+                 alt="Nutritionist">
+            <div class="team-content">
+                <h3>🥗 Nutritionist</h3>
+                <p>
+                    Get personalized meal plans
+                    and healthy dietary guidance.
+                </p>
+                <button class="nutrition-btn"
+                        id="nutritionBtn">
+                    Find Nutritionist
+                </button>
+            </div>
+        </div>
+        <!-- FITNESS -->
+        <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200&auto=format&fit=crop"
+                 alt="Fitness Expert">
+            <div class="team-content">
+                <h3>🏋 Fitness Expert</h3>
+                <p>
+                    Improve fitness, exercise habits
+                    and maintain healthy lifestyle.
+                </p>
+                <button class="fitness-btn"
+                        id="fitnessBtn">
+                    Find Trainer
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- =========================
+         LIVING WITH DIABETES
+    ========================= -->
+    <section class="living-section">
+        <h2>🍎 Living With Diabetes</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🥗 Healthy Diet</h3>
+                <p>
+                    Eat vegetables, fruits and avoid processed foods.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>🏃 Exercise</h3>
+                <p>
+                    Walking, yoga and cardio improve glucose control.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h>💧 Hydration</h3>
+                <p>
+                    Drink enough water to maintain body balance.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>🩺 Checkups</h3>
+                <p>
+                    Monitor glucose, BMI and blood pressure regularly.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- =========================
+         AI CHATBOT
+    ========================= -->
+    <section class="chatbot-section">
+        <h2>🤖 AI Health Assistant</h2>
+        <div class="chat-box"
+             id="chatBox">
+            <div class="bot-message">
+                Hello! I am your AI Healthcare Assistant.
+                Ask me about diabetes, BMI, glucose,
+                diet, exercise or health.
+
+            </div>
+
+        </div>
+
+        <div class="chat-input-area">
+
+            <input type="text"
+                   id="chatInput"
+                   placeholder="Ask healthcare question...">
+            <button id="sendBtn">
+                Send
+            </button>
+        </div>
+    </section>
+    <!-- =========================
+     HEALTH ANALYTICS
+========================= -->
+
+<section class="analytics-section">
+
+    <div class="analytics-header">
+
+        <h2>
+            📊 Real-Time Health Analytics
+        </h2>
+
+        <p>
+
+            AI-powered healthcare monitoring
+            and smart health visualization.
+
+        </p>
+
+    </div>
+
+    <div class="analytics-grid">
+
+        <!-- GLUCOSE -->
+
+        <div class="analytics-card">
+
+            <h3>
+                🩸 Glucose Trend
+            </h3>
+
+            <canvas id="glucoseChart"></canvas>
+
+        </div>
+
+        <!-- BMI -->
+
+        <div class="analytics-card">
+
+            <h3>
+                ⚖ BMI Analysis
+            </h3>
+
+            <canvas id="bmiChart"></canvas>
+
+        </div>
+
+    </div>
+
+</section>
+    <!-- =========================
+     LIVE HEALTH MONITORING
+========================= -->
+<section class="monitor-section">
+    <div class="monitor-header">
+        <h2>
+            ❤️ Live Health Monitoring
+        </h2>
+        <p>
+            AI-powered real-time monitoring
+            for smarter healthcare insights.
+        </p>
+    </div>
+    <div class="monitor-grid">
+        <!-- HEART RATE -->
+        <div class="monitor-card">
+            <div class="monitor-icon">
+                ❤️
+            </div>
+            <h3>
+                Heart Rate
+            </h3>
+            <h1 id="heartRate">
+                78 BPM
+            </h1>
+            <div class="pulse-bar">
+                <div class="pulse-fill"></div>
+            </div>
+        </div>
+        <!-- TEMPERATURE -->
+        <div class="monitor-card">
+            <div class="monitor-icon">
+                🌡
+            </div>
+            <h3>
+                Body Temperature
+            </h3>
+            <h1 id="temperature">
+                98.4°F
+            </h1>
+            <div class="temp-bar">
+                <div class="temp-fill"></div>
+            </div>
+        </div>
+        <!-- OXYGEN -->
+        <div class="monitor-card">
+            <div class="monitor-icon">
+                🫁
+            </div>
+            <h3>
+                Oxygen Level
+            </h3>
+            <h1 id="oxygen">
+                98%
+            </h1>
+            <div class="oxygen-bar">
+                <div class="oxygen-fill"></div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- =========================
+         RESEARCH
+    ========================= -->
+    <section class="research-section">
+        <h2>🔬 Research & Innovation</h2>
+        <div class="research-card">
+            <p>
+                Early diabetes prediction using AI and Machine Learning
+                helps reduce severe health complications through
+                timely intervention and smart healthcare monitoring.
+            </p>
+            <p>
+                DiaPredict AI integrates AI analytics, health monitoring
+                and healthcare support into one ecosystem.
+            </p>
+        </div>
+    </section>
+    <!-- EMERGENCY SOS SECTION -->
+<section class="sos-section">
+    <div class="sos-container">
+        <!-- LEFT SIDE -->
+        <div class="sos-left">
+            <h2>
+                🚨 Emergency SOS Support
+            </h2>
+            <p>
+                Get instant access to emergency
+                healthcare services during critical
+                situations. Quick medical response
+                can save lives.
+            </p>
+            <div class="sos-features">
+                <div class="sos-feature">
+                    🚑 Instant Ambulance Access
+                </div>
+                <div class="sos-feature">
+                    📍 Emergency Location Support
+                </div>
+                <div class="sos-feature">
+                    📞 24x7 Healthcare Assistance
+                </div>
+            </div>
+            <button id="sosBtn"
+                    class="sos-btn">
+                🚨 Activate Emergency SOS
+            </button>
+        </div>
+        <!-- RIGHT SIDE -->
+        <div class="sos-right">
+            <img src="https://images.unsplash.com/photo-1587745416684-47953f16f02f?q=80&w=1200&auto=format&fit=crop"
+                 alt="Emergency Support">
+        </div>
+    </div>
+</section>
+    <!-- =========================
+     SYMPTOM CHECKER
+========================= -->
+<section class="symptom-section">
+    <h2>🩺 Smart Symptom Checker</h2>
+    <div class="symptom-grid">
+        <label><input type="checkbox" value="Fatigue"> Fatigue</label>
+        <label><input type="checkbox" value="Frequent Thirst"> Frequent Thirst</label>
+        <label><input type="checkbox" value="Blurred Vision"> Blurred Vision</label>
+        <label><input type="checkbox" value="Weight Loss"> Weight Loss</label>
+        <label><input type="checkbox" value="Frequent Urination"> Frequent Urination</label>
+        <label><input type="checkbox" value="Headache"> Headache</label>
+    </div>
+    <button id="symptomBtn"
+            class="predict-btn">
+        Analyze Symptoms
+    </button>
+    <div id="symptomResult"
+         class="result-box"></div>
+</section>
+<!-- =========================
+     MEDICAL REPORT UPLOAD
+========================= -->
+<section class="upload-section">
+    <h2>📷 Upload Medical Report</h2>
+    <div class="upload-box">
+        <label for="reportUpload"
+               class="custom-upload">
+            📄 Choose Report
+        </label>
+        <input type="file"
+               id="reportUpload"
+               hidden>
+        <p id="fileName">
+            No file selected
+        </p>
+        <button id="uploadBtn"
+                class="upload-btn">
+            Upload Report
+        </button>
+    </div>
+    <div id="uploadResult"
+         class="result-box"
+         style="display:none; margin-top:25px;">
+    </div>
+</section>
+<!-- =========================
+     DIET PLANNER
+========================= -->
+<section class="diet-section">
+    <h2>🍎 Personalized Diet Plan</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>🥣 Breakfast</h3>
+            <p>
+                Oats, fruits and green tea.
+            </p>
+        </div>
+        <div class="feature-card">
+            <h3>🥗 Lunch</h3>
+            <p>
+                Brown rice, vegetables and protein.
+            </p>
+        </div>
+        <div class="feature-card">
+            <h3>🍲 Dinner</h3>
+            <p>
+                Soup, salad and light protein diet.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- =========================
+     WORKOUT RECOMMENDATIONS
+========================= -->
+<section class="workout-section">
+    <h2>🏃 AI Workout Recommendations</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>🚶 Walking</h3>
+            <p>
+                30 minutes daily walking.
+            </p>
+        </div>
+        <div class="feature-card">
+            <h3>🧘 Yoga</h3>
+            <p>
+                Stress reduction and flexibility.
+            </p>
+        </div>
+        <div class="feature-card">
+            <h3>💪 Cardio</h3>
+            <p>
+                Improves glucose control.
+            </p>
+        </div>
+    </div>
+</section>
+<!-- HEALTH SCORE -->
+<div class="health-score-card">
+    <!-- LEFT -->
+    <div class="health-left">
+        <h2>
+            ❤️ AI Health Score
+        </h2>
+        <p>
+            Excellent! Maintain your healthy lifestyle.
+        </p>
+        <!-- MINI STATS -->
+        <div class="health-stats">
+            <div class="mini-card">
+                <h3>💧 Hydration</h3>
+                <h1>72%</h1>
+                <p>Good</p>
+            </div>
+            <div class="mini-card">
+                <h3>😴 Sleep</h3>
+                <h1>68%</h1>
+                <p>Fair</p>
+            </div>
+            <div class="mini-card">
+                <h3>🏃 Fitness</h3>
+                <h1>75%</h1>
+                <p>Good</p>
+            </div>
+        </div>
+    </div>
+    <!-- RIGHT -->
+    <div class="health-right">
+        <div class="health-percent">
+            82%
+        </div>
+    </div>
+</div>
+<!-- =========================
+    NEARBY HEALTHCARE SERVICES
+========================= -->
+<section class="maps-section">
+    <div class="maps-header">
+        <h2>
+            🌍 Nearby Healthcare Services
+        </h2>
+        <p>
+            Quickly access nearby hospitals,
+            pharmacies and blood banks for
+            emergency healthcare support.
+        </p>
+    </div>
+    <div class="maps-grid">
+        <!-- HOSPITAL -->
+        <div class="maps-card">
+            <img
+            src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop"
+            alt="Hospital">
+            <div class="maps-content">
+                <h3>🏥 Hospitals</h3>
+                <p>
+                    Find nearby hospitals,
+                    emergency rooms and
+                    healthcare centers.
+                </p>
+                <button
+                class="hospital-btn"
+                onclick="window.open(
+                'https://www.google.com/maps/search/hospitals+near+me'
+                )">
+                    Find Hospitals
+                </button>
+            </div>
+        </div>
+        <!-- PHARMACY -->
+        <div class="maps-card">
+            <img
+            src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop"
+            alt="Pharmacy">
+            <div class="maps-content">
+                <h3>💊 Pharmacies</h3>
+                <p>
+                    Locate nearby pharmacies
+                    for medicines and diabetic
+                    healthcare supplies.
+                </p>
+                <button
+                class="download-btn"
+                onclick="window.open(
+                'https://www.google.com/maps/search/pharmacy+near+me'
+                )">
+                    Find Pharmacy
+                </button>
+            </div>
+        </div>
+        <!-- BLOOD BANK -->
+        <div class="maps-card">
+            <img
+            src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=1200&auto=format&fit=crop"
+            alt="Blood Bank">
+            <div class="maps-content">
+                <h3>🩸 Blood Banks</h3>
+                <p>
+                    Access nearby blood banks
+                    and emergency blood donation
+                    support centers.
+                </p>
+                <button
+                class="voice-btn"
+                onclick="window.open(
+                'https://www.google.com/maps/search/blood+bank+near+me'
+                )">
+                    Find Blood Bank
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- =========================
+        FOOTER
+    ========================= -->
+    <footer>
+        © 2026 DiaPredict AI |
+        Intelligent Healthcare Platform
+    </footer>
+    <!-- =========================
+        SCRIPT
+    ========================= -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+function changeLanguage(){
+    const lang =
+    document.getElementById(
+        "languageSelect"
+    ).value;
+    // ENGLISH
+    if(lang === "en"){
+        document.getElementById(
+            "mainTitle"
+        ).innerHTML =
+        `Smart AI Powered
+        <span>Healthcare Platform</span>`;
+        document.getElementById(
+            "startText"
+        ).innerText =
+        "Get Started";
+        document.getElementById(
+            "learnText"
+        ).innerText =
+        "Learn More";
+    }
+    // HINDI
+    else if(lang === "hi"){
+        document.getElementById(
+            "mainTitle"
+        ).innerHTML =
+        `स्मार्ट एआई संचालित
+        <span>हेल्थकेयर प्लेटफॉर्म</span>`;
+        document.getElementById(
+            "startText"
+        ).innerText =
+        "शुरू करें";
+        document.getElementById(
+            "learnText"
+        ).innerText =
+        "और जानें";
+    }
+    // BENGALI
+    else if(lang === "bn"){
+        document.getElementById(
+            "mainTitle"
+        ).innerHTML =
+        `স্মার্ট এআই চালিত
+        <span>হেলথকেয়ার প্ল্যাটফর্ম</span>`;
+        document.getElementById(
+            "startText"
+        ).innerText =
+        "শুরু করুন";
+        document.getElementById(
+            "learnText"
+        ).innerText =
+        "আরও জানুন";
+    }
+}
+</script>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,bn',
+            layout:
+            google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+<script type="text/javascript"
+src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+</body>
+</html>
